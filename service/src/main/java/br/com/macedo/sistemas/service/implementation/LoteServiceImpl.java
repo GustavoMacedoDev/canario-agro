@@ -26,12 +26,13 @@ public class LoteServiceImpl implements LoteService {
 	@Override
 	public Lote fromDto(LoteNewDto loteNewDto) {
 		return new Lote(loteNewDto.getLote(), loteNewDto.getDataFabricacao(), 
-				loteNewDto.getDataValidade());
+				loteNewDto.getDataValidade(), loteNewDto.getSaldo(), loteNewDto.getMedicamento());
 	}
 
 	@Override
 	public Lote insert(Lote lote) {
 		lote.setIdLote(null);
+		lote.setSaldo(0.0);
 		return loteRepository.save(lote);
 	}
 
@@ -43,5 +44,26 @@ public class LoteServiceImpl implements LoteService {
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Lote.class.getName()));
 	
 	}
+
+	@Override
+	public void adicionaSaldo(Lote lote, Double quantidade) {
+		Lote loteBanco = loteRepository.getOne(lote.getIdLote());
+		Double saldoBanco = loteBanco.getSaldo();
+		Double novoSaldo = saldoBanco + quantidade;
+		lote.setSaldo(novoSaldo);
+		loteRepository.save(lote);
+		
+	}
+
+	@Override
+	public void diminuiSaldo(Lote lote, Double quantidade) {
+		Lote loteBanco = loteRepository.getOne(lote.getIdLote());
+		Double saldoBanco = loteBanco.getSaldo();
+		Double novoSaldo = saldoBanco - quantidade;
+		lote.setSaldo(novoSaldo);
+		loteRepository.save(lote);
+	}
+
+	
 
 }

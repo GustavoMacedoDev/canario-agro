@@ -11,12 +11,16 @@ import br.com.macedo.sistemas.domain.dto.AplicacaoNewDto;
 import br.com.macedo.sistemas.domain.exception.ObjectNotFoundException;
 import br.com.macedo.sistemas.domain.repository.AplicacaoRepository;
 import br.com.macedo.sistemas.domain.service.AplicacaoService;
+import br.com.macedo.sistemas.domain.service.LoteService;
 
 @Service
 public class AplicacaoServiceImpl implements AplicacaoService {
 	
 	@Autowired
 	private AplicacaoRepository aplicacaoRepository;
+	
+	@Autowired
+	private LoteService loteService;
 
 	@Override
 	public List<Aplicacao> buscaAplicacao() {
@@ -26,14 +30,16 @@ public class AplicacaoServiceImpl implements AplicacaoService {
 	@Override
 	public Aplicacao fromDto(AplicacaoNewDto aplicacaoNewDto) {
 		return new Aplicacao(aplicacaoNewDto.getDataAplicacao(),
-				aplicacaoNewDto.getAnimal(), aplicacaoNewDto.getMedicamento());
+				aplicacaoNewDto.getAnimal(), aplicacaoNewDto.getMedicamento(), aplicacaoNewDto.getLote());
 	}
 
 	@Override
 	public Aplicacao insert(Aplicacao aplicacao) {
 		aplicacao.setIdAplicacao(null);
+		aplicacaoRepository.save(aplicacao);
+		loteService.diminuiSaldo(aplicacao.getLote(), 1.0);
+		return aplicacao;
 		
-		return aplicacaoRepository.save(aplicacao);
 	}
 
 	@Override

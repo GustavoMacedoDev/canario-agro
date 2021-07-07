@@ -12,6 +12,7 @@ import br.com.macedo.sistemas.domain.aggregate.Usuario;
 import br.com.macedo.sistemas.domain.service.UsuarioService;
 import br.com.macedo.sistemas.domain.util.JwtUserFactory;
 
+
 @Service
 public class JwtUserDetailsServiceImpl implements UserDetailsService{
 

@@ -1,7 +1,11 @@
 package br.com.macedo.sistemas.domain.aggregate;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,20 +15,23 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.macedo.sistemas.domain.enums.SexoEnum;
 
 @Entity
 @Table(name = "animal")
-public class Animal implements Serializable{
+public class Animal implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_animal")
-	private Long idAnimal;
+	private Long id;
 	@Column
 	private String nome;
 	@Column
@@ -34,16 +41,14 @@ public class Animal implements Serializable{
 	@Column(name = "sexo", nullable = false)
 	private SexoEnum sexo;
 	
-	@Column(name = "data_nascimento")
-	private Date dataNascimento;
-	@Column(name = "peso_nascimento")
-	private Double pesoNascimento;
+	@Column(name = "data_entrada")
+	private Date dataEntrada;
 	
-	@ManyToOne
-	private Produtor produtor;
+	@Column(name = "peso_entrada")
+	private Double pesoEntrada;
 	
-	@ManyToOne
-	private Fornecedor fornecedor;
+	@Column(name = "peso_atual")
+	private Double pesoAtual;
 	
 	@ManyToOne
 	private Raca raca;
@@ -51,30 +56,39 @@ public class Animal implements Serializable{
 	@ManyToOne
 	private Categoria categoria;
 	
+	@ManyToOne
+	private Pessoa fornecedor;
+	
+	@ManyToOne
+	private Pessoa produtor;
+	
+	@Column(name = "em_estoque")
+	private boolean emEstoque;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy="id.animal")
+	private Set<ItemVenda> itens = new HashSet<>();
+	
 	public Animal() {
 		
 	}
 
-	public Animal(String nome, String identificacao, SexoEnum sexo, Date dataNascimento, Double pesoNascimento,
-			Produtor produtor, Fornecedor fornecedor, Raca raca, Categoria categoria) {
-		super();
-		this.nome = nome;
-		this.identificacao = identificacao;
-		this.sexo = sexo;
-		this.dataNascimento = dataNascimento;
-		this.pesoNascimento = pesoNascimento;
-		this.produtor = produtor;
-		this.fornecedor = fornecedor;
-		this.raca = raca;
-		this.categoria = categoria;
+	@JsonIgnore
+	public List<Venda> getVendas() {
+		List<Venda> lista = new ArrayList<>();
+		for (ItemVenda x : itens) {
+			lista.add(x.getVenda());
+		}
+		return lista;
+	}
+	
+	
+	public Long getId() {
+		return id;
 	}
 
-	public Long getIdAnimal() {
-		return idAnimal;
-	}
-
-	public void setIdAnimal(Long idAnimal) {
-		this.idAnimal = idAnimal;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getNome() {
@@ -93,36 +107,36 @@ public class Animal implements Serializable{
 		this.identificacao = identificacao;
 	}
 
-	public Date getDataNascimento() {
-		return dataNascimento;
+	public Date getDataEntrada() {
+		return dataEntrada;
 	}
 
-	public void setDataNascimento(Date dataNascimento) {
-		this.dataNascimento = dataNascimento;
+	public void setDataEntrada(Date dataEntrada) {
+		this.dataEntrada = dataEntrada;
 	}
 
-	public Double getPesoNascimento() {
-		return pesoNascimento;
+	public Double getPesoEntrada() {
+		return pesoEntrada;
 	}
 
-	public void setPesoNascimento(Double pesoNascimento) {
-		this.pesoNascimento = pesoNascimento;
+	public void setPesoEntrada(Double pesoEntrada) {
+		this.pesoEntrada = pesoEntrada;
+	}
+	
+	public Double getPesoAtual() {
+		return pesoAtual;
 	}
 
-	public Produtor getProdutor() {
-		return produtor;
+	public void setPesoAtual(Double pesoAtual) {
+		this.pesoAtual = pesoAtual;
 	}
 
-	public void setProdutor(Produtor produtor) {
-		this.produtor = produtor;
+	public SexoEnum getSexo() {
+		return sexo;
 	}
 
-	public Fornecedor getFornecedor() {
-		return fornecedor;
-	}
-
-	public void setFornecedor(Fornecedor fornecedor) {
-		this.fornecedor = fornecedor;
+	public void setSexo(SexoEnum sexo) {
+		this.sexo = sexo;
 	}
 
 	public Raca getRaca() {
@@ -141,13 +155,28 @@ public class Animal implements Serializable{
 		this.categoria = categoria;
 	}
 
-	public SexoEnum getSexo() {
-		return sexo;
+	public Pessoa getFornecedor() {
+		return fornecedor;
 	}
 
-	public void setSexo(SexoEnum sexo) {
-		this.sexo = sexo;
+	public void setFornecedor(Pessoa fornecedor) {
+		this.fornecedor = fornecedor;
 	}
 
-	
+	public Pessoa getProdutor() {
+		return produtor;
+	}
+
+	public void setProdutor(Pessoa produtor) {
+		this.produtor = produtor;
+	}
+
+	public boolean isEmEstoque() {
+		return emEstoque;
+	}
+
+	public void setEmEstoque(boolean emEstoque) {
+		this.emEstoque = emEstoque;
+	}
+
 }

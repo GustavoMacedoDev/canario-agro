@@ -11,6 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,6 +24,7 @@ import br.com.macedo.sistemas.domain.dto.JwtAuthenticationDto;
 import br.com.macedo.sistemas.domain.dto.TokenDto;
 import br.com.macedo.sistemas.domain.model.Response;
 import br.com.macedo.sistemas.domain.util.JwtTokenUtil;
+
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -53,7 +55,9 @@ public class AuthenticationController {
 	@PostMapping
 	public ResponseEntity<Response<TokenDto>> gerarTokenJwt(
 			@Validated @RequestBody JwtAuthenticationDto authenticationDto, BindingResult result)
-			throws AuthenticationException {
+			throws AuthenticationException {	
+		
+		geraSena();
 		
 		Response<TokenDto> response = new Response<TokenDto>();
 
@@ -74,10 +78,16 @@ public class AuthenticationController {
 		String token = jwtTokenUtil.obterToken(userDetails);
 
 		response.setData(new TokenDto(token));
-		
-		
 
 		return ResponseEntity.ok(response);
+		
+		
 	}
+	
+	void geraSena(){
+		BCryptPasswordEncoder bc = new BCryptPasswordEncoder();
+		System.out.println(bc.encode("123456"));
+	}
+
 
 }

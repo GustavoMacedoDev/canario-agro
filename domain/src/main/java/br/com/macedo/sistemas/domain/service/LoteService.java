@@ -14,5 +14,11 @@ public interface LoteService {
 	Lote insert(Lote lote);
 	
 	Lote findById(Long id);
+	
+	void adicionaSaldo(Lote lote, Double quantidade);
+	
+	void diminuiSaldo(Lote lote, Double quantidade);
+	
+	
 
 }

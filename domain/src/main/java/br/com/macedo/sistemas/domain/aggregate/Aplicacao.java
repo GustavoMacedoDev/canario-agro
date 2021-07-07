@@ -16,7 +16,6 @@ import javax.persistence.Table;
 @Table(name = "aplicacao")
 public class Aplicacao implements Serializable {
 
-	
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,19 +26,20 @@ public class Aplicacao implements Serializable {
 	private Animal animal;
 	@ManyToOne
 	private Medicamento medicamento;
+	@ManyToOne
+	private Lote lote;
 	
 	public Aplicacao() {
 		// TODO Auto-generated constructor stub
 	}
-
-	public Aplicacao(Date dataAplicacao, Animal animal, Medicamento medicamento) {
+	
+	public Aplicacao(Date dataAplicacao, Animal animal, Medicamento medicamento, Lote lote) {
 		super();
 		this.dataAplicacao = dataAplicacao;
 		this.animal = animal;
 		this.medicamento = medicamento;
+		this.lote = lote;
 	}
-
-
 
 	public Long getIdAplicacao() {
 		return idAplicacao;
@@ -76,7 +76,13 @@ public class Aplicacao implements Serializable {
 	public void setMedicamento(Medicamento medicamento) {
 		this.medicamento = medicamento;
 	}
-	
-	
+
+	public Lote getLote() {
+		return lote;
+	}
+
+	public void setLote(Lote lote) {
+		this.lote = lote;
+	}
 	
 }

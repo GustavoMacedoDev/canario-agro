@@ -12,18 +12,6 @@ public class AnimalDto {
 	public AnimalDto() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	
-
-	public AnimalDto(String nome, String identificacao, Date dataNascimento, Double pesoNascimento) {
-		super();
-		this.nome = nome;
-		this.identificacao = identificacao;
-		this.dataNascimento = dataNascimento;
-		this.pesoNascimento = pesoNascimento;
-	}
-
-
 
 	public String getNome() {
 		return nome;

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.macedo.sistemas.domain.aggregate.Animal;
-import br.com.macedo.sistemas.domain.dto.AnimalNewDto;
 import br.com.macedo.sistemas.domain.service.AnimalService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -27,9 +26,15 @@ public class AnimalController {
 	@Autowired
 	private AnimalService animalService;
 	
+	
 	@GetMapping("/animais")
 	public List<Animal> buscaAnimais() {
-		return this.animalService.buscaAnimais();
+		return this.animalService.buscaTodosAnimais();
+	}
+	
+	@GetMapping("/animaisemestoque")
+	public List<Animal> buscaAnimaisEmEstoque(){
+		return animalService.buscaAnimaisEmEstoque();
 	}
 	
 	@GetMapping("/{id}")
@@ -39,15 +44,14 @@ public class AnimalController {
 		return ResponseEntity.ok().body(animal);
 	}
 	
-	
 	@PostMapping("/cadastra")
-	public ResponseEntity<Void> cadastraAnimal(@Validated @RequestBody AnimalNewDto animalNewDto) {
-		
-		Animal animal = animalService.fromDto(animalNewDto);
+	public ResponseEntity<Void> cadastraAnimal(@Validated @RequestBody Animal animal) {
+		animal.setEmEstoque(true);
+		animal.setPesoAtual(animal.getPesoEntrada());
 		animal = animalService.insert(animal);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(animal.getIdAnimal()).toUri();
+				.path("/{id}").buildAndExpand(animal.getId()).toUri();
 			return ResponseEntity.created(uri).build();
 		
 		

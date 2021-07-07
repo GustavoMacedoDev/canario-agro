@@ -15,39 +15,41 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.macedo.sistemas.domain.aggregate.Produtor;
-import br.com.macedo.sistemas.domain.dto.ProdutorDto;
-import br.com.macedo.sistemas.domain.service.ProdutorService;
+import br.com.macedo.sistemas.domain.aggregate.Arroba;
+import br.com.macedo.sistemas.domain.service.ArrobaService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/produtor")
-public class ProdutorController {
+@RequestMapping("/arroba")
+public class ArrobaController {
 	
 	@Autowired
-	private ProdutorService produtorService;
+	private ArrobaService arrobaService;
 	
-	@GetMapping("/produtores")
-	public List<Produtor> buscaProdutores(){
-		return this.produtorService.buscaProdutores();
+	@GetMapping("/arrobas")
+	public List<Arroba> buscaArrobas() {
+		return arrobaService.buscaArrobas();
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<Arroba> findById(@PathVariable Long id) {
+		Arroba arroba  = arrobaService.findById(id);
+		
+		return ResponseEntity.ok().body(arroba);
 	}
 
-	@GetMapping("{id}")
-	public ResponseEntity<Produtor> findById(@PathVariable Long id) {
-		Produtor produtor = this.produtorService.findById(id);
-		
-		return ResponseEntity.ok().body(produtor);
-	}
-	
 	@PostMapping("/cadastra")
-	public ResponseEntity<Void> insert(@Validated @RequestBody ProdutorDto produtorDto) {
-		Produtor produtor = produtorService.fromDto(produtorDto);
+	public ResponseEntity<Void> cadastraArroba(@Validated @RequestBody Arroba arroba) {
 		
-		produtor = produtorService.insert(produtor);
+		arroba = arrobaService.insert(arroba);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(produtor.getIdProdutor()).toUri();
+				.path("/{id}").buildAndExpand(arroba.getId()).toUri();
 			return ResponseEntity.created(uri).build();
 		
+		
 	}
+	
+	
+
 }

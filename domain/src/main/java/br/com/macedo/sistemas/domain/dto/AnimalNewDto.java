@@ -3,22 +3,22 @@ package br.com.macedo.sistemas.domain.dto;
 import java.util.Date;
 
 import br.com.macedo.sistemas.domain.aggregate.Categoria;
-import br.com.macedo.sistemas.domain.aggregate.Fornecedor;
-import br.com.macedo.sistemas.domain.aggregate.Produtor;
+import br.com.macedo.sistemas.domain.aggregate.Pessoa;
 import br.com.macedo.sistemas.domain.aggregate.Raca;
 import br.com.macedo.sistemas.domain.enums.SexoEnum;
 
 public class AnimalNewDto {
 	
 	private String nome;
-	private Date dataNascimento;
-	private Double pesoNascimento;
+	private Date dataEntrada;
+	private Double pesoEntrada;
 	private String identificacao;
 	private SexoEnum sexo;
-	private Produtor produtor;
-	private Fornecedor fornecedor;
 	private Raca raca;
 	private Categoria categoria;
+	private Pessoa fornecedor;
+	private Pessoa produtor;
+	
 	
 	public AnimalNewDto() {
 		// TODO Auto-generated constructor stub
@@ -32,21 +32,13 @@ public class AnimalNewDto {
 		this.nome = nome;
 	}
 
-	public Date getDataNascimento() {
-		return dataNascimento;
-	}
-
-	public void setDataNascimento(Date dataNascimento) {
-		this.dataNascimento = dataNascimento;
-	}
-
 	
-	public Double getPesoNascimento() {
-		return pesoNascimento;
+	public Double getPesoEntrada() {
+		return pesoEntrada;
 	}
 
-	public void setPesoNascimento(Double pesoNascimento) {
-		this.pesoNascimento = pesoNascimento;
+	public void setPesoEntrada(Double pesoEntrada) {
+		this.pesoEntrada = pesoEntrada;
 	}
 
 	public String getIdentificacao() {
@@ -65,22 +57,6 @@ public class AnimalNewDto {
 		this.sexo = sexo;
 	}
 
-	public Produtor getProdutor() {
-		return produtor;
-	}
-
-	public void setProdutor(Produtor produtor) {
-		this.produtor = produtor;
-	}
-
-	public Fornecedor getFornecedor() {
-		return fornecedor;
-	}
-
-	public void setFornecedor(Fornecedor fornecedor) {
-		this.fornecedor = fornecedor;
-	}
-
 	public Raca getRaca() {
 		return raca;
 	}
@@ -95,6 +71,22 @@ public class AnimalNewDto {
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
+	}
+
+	public Pessoa getFornecedor() {
+		return fornecedor;
+	}
+
+	public void setFornecedor(Pessoa fornecedor) {
+		this.fornecedor = fornecedor;
+	}
+
+	public Pessoa getProdutor() {
+		return produtor;
+	}
+
+	public void setProdutor(Pessoa produtor) {
+		this.produtor = produtor;
 	}
 	
 }

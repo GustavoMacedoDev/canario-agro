@@ -9,42 +9,37 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "produtor")
-public class Produtor implements Serializable{
+@Table(name = "pessoa")
+public class Pessoa implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idProdutor;
-	
-	private String razaoSocial;
+	private Long idPessoa;
 	
 	private String nome;
 	
-	public Produtor() {
+	private String documento;
+	
+	public Pessoa() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Produtor(String razaoSocial, String nome) {
+	
+	public Pessoa(String nome, String documento) {
 		super();
-		this.razaoSocial = razaoSocial;
 		this.nome = nome;
+		this.documento = documento;
 	}
 
-	public Long getIdProdutor() {
-		return idProdutor;
+
+	public Long getIdPessoa() {
+		return idPessoa;
 	}
 
-	public void setIdProdutor(Long idProdutor) {
-		this.idProdutor = idProdutor;
-	}
-
-	public String getRazaoSocial() {
-		return razaoSocial;
-	}
-
-	public void setRazaoSocial(String razaoSocial) {
-		this.razaoSocial = razaoSocial;
+	public void setIdPessoa(Long idPessoa) {
+		this.idPessoa = idPessoa;
 	}
 
 	public String getNome() {
@@ -54,6 +49,14 @@ public class Produtor implements Serializable{
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
 
+	public String getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(String documento) {
+		this.documento = documento;
+	}
+
+	
 }

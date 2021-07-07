@@ -2,11 +2,15 @@ package br.com.macedo.sistemas.domain.dto;
 
 import java.util.Date;
 
+import br.com.macedo.sistemas.domain.aggregate.Medicamento;
+
 public class LoteNewDto {
 	
 	private String lote;
 	private Date dataFabricacao;
 	private Date dataValidade;
+	private Double saldo;
+	private Medicamento medicamento;
 	
 	public LoteNewDto() {
 		// TODO Auto-generated constructor stub
@@ -36,4 +40,20 @@ public class LoteNewDto {
 		this.dataValidade = dataValidade;
 	}
 
+	public Medicamento getMedicamento() {
+		return medicamento;
+	}
+
+	public void setMedicamento(Medicamento medicamento) {
+		this.medicamento = medicamento;
+	}
+
+	public Double getSaldo() {
+		return saldo;
+	}
+
+	public void setSaldo(Double saldo) {
+		this.saldo = saldo;
+	}
+	
 }
