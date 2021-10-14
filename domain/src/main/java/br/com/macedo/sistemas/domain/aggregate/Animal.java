@@ -11,9 +11,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -21,6 +23,8 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.macedo.sistemas.domain.enums.SexoEnum;
+import br.com.macedo.sistemas.domain.enums.StatusEstoqueEnum;
+
 
 @Entity
 @Table(name = "animal")
@@ -34,15 +38,22 @@ public class Animal implements Serializable {
 	private Long id;
 	@Column
 	private String nome;
-	@Column
+	@Column(unique = true)
 	private String identificacao;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "sexo", nullable = false)
 	private SexoEnum sexo;
 	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "status", nullable = false)
+	private StatusEstoqueEnum status;
+	
 	@Column(name = "data_entrada")
 	private Date dataEntrada;
+	
+	@Column(name = "data_nascimento")
+	private Date dataNascimento;
 	
 	@Column(name = "peso_entrada")
 	private Double pesoEntrada;
@@ -62,8 +73,13 @@ public class Animal implements Serializable {
 	@ManyToOne
 	private Pessoa produtor;
 	
-	@Column(name = "em_estoque")
-	private boolean emEstoque;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "mae", referencedColumnName = "id_animal", updatable = false, insertable = false)
+	private Animal mae;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "pai", referencedColumnName = "id_animal", updatable = false, insertable = false)
+	private Animal pai;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="id.animal")
@@ -115,6 +131,14 @@ public class Animal implements Serializable {
 		this.dataEntrada = dataEntrada;
 	}
 
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
+
 	public Double getPesoEntrada() {
 		return pesoEntrada;
 	}
@@ -137,6 +161,14 @@ public class Animal implements Serializable {
 
 	public void setSexo(SexoEnum sexo) {
 		this.sexo = sexo;
+	}
+
+	public StatusEstoqueEnum getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusEstoqueEnum status) {
+		this.status = status;
 	}
 
 	public Raca getRaca() {
@@ -169,14 +201,6 @@ public class Animal implements Serializable {
 
 	public void setProdutor(Pessoa produtor) {
 		this.produtor = produtor;
-	}
-
-	public boolean isEmEstoque() {
-		return emEstoque;
-	}
-
-	public void setEmEstoque(boolean emEstoque) {
-		this.emEstoque = emEstoque;
 	}
 
 }

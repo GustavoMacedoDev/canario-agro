@@ -10,6 +10,14 @@ import br.com.macedo.sistemas.domain.aggregate.Animal;
 
 public interface AnimalRepository extends JpaRepository<Animal, Long> {
 
-	@Query(value = "select * from animal a where a.em_estoque = true", nativeQuery = true)
+	@Query(value = "select * from animal where status = ?1", nativeQuery = true)
+	List<Animal> buscaAnimaisDisponiveis(String status);
+	
+	@Query(value = "select * from animal where status = 'DISPONIVEL' OR status = 'BLOQUEADO' ", nativeQuery = true)
 	List<Animal> buscaAnimaisEmEstoque();
+	
+	@Query(value = "select * from animal where sexo = ?1 ", nativeQuery = true)
+	List<Animal> buscaAnimaisPorSexo(String sexo);
+	
+	
 }

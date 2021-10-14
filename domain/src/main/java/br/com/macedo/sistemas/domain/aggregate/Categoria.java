@@ -2,6 +2,7 @@ package br.com.macedo.sistemas.domain.aggregate;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,6 +19,7 @@ public class Categoria implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idCategoria;
 	
+	@Column(unique = true)
 	private String nome;
 	
 	public Categoria() {

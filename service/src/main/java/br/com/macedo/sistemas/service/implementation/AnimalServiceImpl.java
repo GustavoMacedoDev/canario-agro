@@ -10,10 +10,9 @@ import br.com.macedo.sistemas.domain.aggregate.Animal;
 import br.com.macedo.sistemas.domain.aggregate.ItemVenda;
 import br.com.macedo.sistemas.domain.aggregate.Peso;
 import br.com.macedo.sistemas.domain.aggregate.Venda;
-import br.com.macedo.sistemas.domain.dto.AnimalNewDto;
+import br.com.macedo.sistemas.domain.enums.StatusEstoqueEnum;
 import br.com.macedo.sistemas.domain.exception.ObjectNotFoundException;
 import br.com.macedo.sistemas.domain.repository.AnimalRepository;
-import br.com.macedo.sistemas.domain.repository.ItemVendaRepository;
 import br.com.macedo.sistemas.domain.service.AnimalService;
 import br.com.macedo.sistemas.domain.service.PesoService;
 
@@ -24,14 +23,12 @@ public class AnimalServiceImpl implements AnimalService {
 	private AnimalRepository animalRepository;
 	
 	@Autowired
-	private ItemVendaRepository itemVendaRepository;
-	
-	@Autowired
 	private PesoService pesoService;
 	
 	@Override
 	public Animal insert(Animal animal) {
 		animal.setId(null);
+		animal.setPesoAtual(animal.getPesoEntrada());
 		
 		animalRepository.save(animal);
 		
@@ -54,11 +51,6 @@ public class AnimalServiceImpl implements AnimalService {
 	}
 	
 	@Override
-	public Animal fromDto(AnimalNewDto animalNewDto) {
-		return null;
-	}
-
-	@Override
 	public Animal findById(Long id) {
 		Optional<Animal> animal = animalRepository.findById(id);
 		
@@ -78,30 +70,41 @@ public class AnimalServiceImpl implements AnimalService {
 		
 	}
 
+	
 	@Override
-	public List<Animal> buscaTodosAnimais() {
-		
-		return animalRepository.findAll();
+	public void atualizaEstoqueAnimais(Venda venda) {
+		for (ItemVenda item : venda.getItens()) {
+			Animal animal = item.getAnimal();
+			animal.setStatus(StatusEstoqueEnum.VENDIDO);
+			animalRepository.save(animal);
+		}
+	}
+
+	@Override
+	public List<Animal> buscaAnimaisDisponiveis(String status) {
+		return animalRepository.buscaAnimaisDisponiveis(status);
+	}
+
+	@Override
+	public List<Animal> buscaAnimaisVendidos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Animal> buscaAnimaisBloqueados() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public List<Animal> buscaAnimaisEmEstoque() {
-		
 		return animalRepository.buscaAnimaisEmEstoque();
 	}
-	
+
 	@Override
-	public void atualizaEstoqueAnimais(Venda venda) {
-		
-		List<ItemVenda> itens = itemVendaRepository.findAllByIdVendaIdVenda(venda.getIdVenda());
-		
-		for (ItemVenda itemVenda : itens) {
-			Animal animal = animalRepository.getOne(itemVenda.getAnimal().getId());
-			animal.setEmEstoque(false);
-			animalRepository.save(animal);
-		}
-		
-		
+	public List<Animal> buscaAnimaisPorSexo(String sexo) {
+		return animalRepository.buscaAnimaisPorSexo(sexo);
 	}
 }
 

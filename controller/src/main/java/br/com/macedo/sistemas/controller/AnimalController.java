@@ -26,12 +26,16 @@ public class AnimalController {
 	@Autowired
 	private AnimalService animalService;
 	
-	
-	@GetMapping("/animais")
-	public List<Animal> buscaAnimais() {
-		return this.animalService.buscaTodosAnimais();
+	@GetMapping("/status/{status}")
+	public List<Animal> buscaAnimaisPorStatus(@PathVariable String status){
+		return animalService.buscaAnimaisDisponiveis(status);
 	}
 	
+	@GetMapping("/sexo/{sexo}")
+	public List<Animal> buscaAnimaisPorSexo(@PathVariable String sexo){
+		return animalService.buscaAnimaisPorSexo(sexo);
+	}
+		
 	@GetMapping("/animaisemestoque")
 	public List<Animal> buscaAnimaisEmEstoque(){
 		return animalService.buscaAnimaisEmEstoque();
@@ -46,8 +50,7 @@ public class AnimalController {
 	
 	@PostMapping("/cadastra")
 	public ResponseEntity<Void> cadastraAnimal(@Validated @RequestBody Animal animal) {
-		animal.setEmEstoque(true);
-		animal.setPesoAtual(animal.getPesoEntrada());
+		
 		animal = animalService.insert(animal);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
